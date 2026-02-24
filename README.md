@@ -38,7 +38,7 @@ Me guío con la información obtenida en la primera respuesta y ajusto la consul
 
 Nueva request guiándome con la response anterior:
 
-imagen 
+![DNS resuelto](image1.png)
 
 Analizo la sección ANSWER y obtengo la IP address correspondiente.
 
@@ -74,7 +74,7 @@ Client  → ACK
 
 Analizo las combinaciones de flags que muestra el juego y las ordeno según el proceso correcto del establecimiento de conexión TCP.
 
-imagen 
+![TCP resuelto](image.png)
 
 
 ### Resultado
@@ -93,8 +93,6 @@ Generar manualmente una request HTTP tipo GET
 
 ### Procedimiento
 
-Imagen
-
 Aca simplemente hay que generar una request del tipo get para http
 
 - selecciono get que es la response que busco
@@ -111,7 +109,7 @@ User-Agent: id=1
 
 ### evidencia:
 
-imagen de request y response
+![HTTP GET resuelto](image2.png)
 
 ### Resultado
 
@@ -127,7 +125,7 @@ Ordenar correctamente los mensajes del TLS Handshake
 
 ### Procedimiento
 
-Imagen
+![Inicio TLS](image copy.png)
 
 Empiezo el challenge y veo que tengo un par de errores que el juego los marca
 
@@ -147,8 +145,8 @@ Flujo correcto del handshake:
 
 ### evidencia:
 
-imagen del orden incorrecto  
-imagen del orden corregido
+![TLS Resuelto](image copy 2.png)
+![Success](image copy 3.png)
 
 ### Resultado
 
@@ -162,9 +160,6 @@ Al ordenar correctamente los mensajes segun el flujo TLS, el challenge se comple
 Realizar una request HTTP segura (HTTPS)
 
 ### Procedimiento
-
-Imagen
-
 Aca por ultimo tengo que traerme una request de http segura
 
 - ejecuto un metodo GET
@@ -183,8 +178,8 @@ User-Agent: id=1
 
 ### evidencia:
 
-imagen de la request HTTPS  
-imagen de la response 200 OK con body  
+![HTTPS Resuelto](image copy 4.png)
+![HTTPS Resuelto](image copy 5.png)
 
 ### Resultado
 
@@ -208,6 +203,8 @@ me comenta sobre Azure
 - comienza el desafio Spare Key
 
 Empiezo explorando comandos basicos de azure
+https://www.economize.cloud/blog/azure-cloud-shell-commands-list/
+
 
 ```bash
 az group list
@@ -260,7 +257,7 @@ Decido descargar su contenido
 az storage blob download \
 --account-name neighborhoodhoa \
 --container-name '$web' \
---name 'iac/terraform.tfvars' \
+--name 'iac/terraform.tfvars' \![alt text](image.png)
 --file /dev/stdout \
 --auth-mode login
 ```
