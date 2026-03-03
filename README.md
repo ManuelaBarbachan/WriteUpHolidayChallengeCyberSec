@@ -1026,9 +1026,8 @@ Intento montar la imagen en Windows, pero el sistema me muestra un mensaje indic
 Esto me hace pensar que puede haber información eliminada o estructuras dañadas dentro del sistema de archivos, por lo que decido utilizar una herramienta forense más avanzada.
 
 
-## 2. Análisis con TestDisk
 
-Para analizar la imagen utilizo **TestDisk**, una herramienta incluida en Kali Linux que permite recuperar particiones y archivos eliminados.
+Para analizar la imagen utilizo TestDisk, una herramienta incluida en Kali Linux que permite recuperar particiones y archivos eliminados.
 
 Me dirijo al directorio donde se encuentra la imagen y ejecuto:
 
@@ -1041,22 +1040,16 @@ Selecciono el archivo `floppy.img` de la lista de medios detectados.
 ![retro](image%20copy%2071.png)
 
 
-## 3. Tipo de tabla de particiones
-
 TestDisk no detecta automáticamente una tabla válida, por lo que acepto la opción por defecto:
 
 "none"
 
-
-## 4. Sistema de archivos
 
 La herramienta detecta que el sistema de archivos es:
 
 FAT12
 
 Selecciono la partición FAT12 para continuar.
-
-## 5. Listado de archivos
 
 Luego selecciono la opción:
 
@@ -1070,8 +1063,6 @@ all_i-want_for_christmas.bas
 
 ![retro](image%20copy%2072.png)
 
-## 6. Recuperación del archivo
-
 Selecciono el archivo y presiono:
 
 "c"
@@ -1084,8 +1075,6 @@ Elijo el directorio de destino y vuelvo a presionar:
 
 cuando la operación es exitosa, testDisk me confirma que el archivo fue copiado correctamente.
 
-## 7. Análisis del contenido
-
 Abro el archivo recuperado en un editor de texto.
 
 El contenido corresponde a un programa en BASIC con aproximadamente 570 líneas que describen una simulación relacionada con Star Trek, lo cual coincide con la pista que mencionaba buscar un “tesoro clásico”.
@@ -1096,8 +1085,6 @@ bWVycnkgY2hyaXN0bWFzIHRvIGFsbCBhbmQgdG8gYWxsIGEgZ29vZCBuaWdodAo=
 
 ![retro](image%20copy%2073.png)
 
-
-## 8. Decodificación
 
 Decido decodificar la cadena en la web utilizando un programa para esto
 
@@ -1493,8 +1480,6 @@ Logré identificar el uso de XOR 7 y revertir la operación.
 
 Escalar privilegios modificando un JWT para acceder al panel administrativo y descubrir el firmware instalado.
 
-
-## 1. Obtener un JWT válido
 
 Usamos las credenciales encontradas en el archivo notes para autenticarnos contra el IdP:
 
