@@ -1654,3 +1654,5 @@ Firmware update downloaded.
 El nombre del firmware instalado es:
 
 refrigeration-botnet.bin
+
+Escalé privilegios y consegui el nombre del firmware instalado, por lo que el desafio está completado.
